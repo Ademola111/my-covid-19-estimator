@@ -1,2 +1,4 @@
 #assessment1.py
-print("hello git")
+def data():
+    data= 674
+    print(data)
