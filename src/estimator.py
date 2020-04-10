@@ -73,7 +73,6 @@ class data:
                             ("moneyLikelyTobeLossInDollars=", moneyLikelyTobeLossInDollars)}
 
 
-        print(estimator)
 
     
         
