@@ -1,0 +1,106 @@
+@charset "utf-8";
+/* CSS Document */
+
+body {
+	background-color:#000;
+}
+
+h1 {color:#FF0;
+	font:Georgia, "Times New Roman", Times, serif;
+	font-size:36px;
+	font-style:inherit;
+	text-shadow:inherit;
+	
+}
+
+
+p {
+	color:#FFF;
+	font:Georgia, "Times New Roman", Times, serif;
+	font-size:14px;
+	text-align:center;
+}
+
+h2.motto {
+	color:#FFF;
+	font:"Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	font-size:20px;
+	text-align:center;
+	}
+
+ul {
+	list-style-type:none;
+	margin: 0;
+	padding: 0;
+	overflow:hidden;
+	border:1px #90C;
+	background-color:#0FF;
+	top:auto;
+	position:fixed;
+	width:100%;
+}
+
+li {
+	float:left;
+}
+	
+li a {
+	display:block;
+	color:#C06;
+	text-align:center;
+	padding:14px 16px;
+	text-decoration:inherit;
+}
+
+li a:hover {
+	background-color:#111;
+}
+
+#page-wrap {
+	margin:0 auto;
+	width: 800px
+}
+
+aside {
+	color:#9FF;
+	font:Georgia, "Times New Roman", Times, serif;
+	font-size:12px;
+	text-align:center;
+}
+
+big {
+	font:"Lucida Sans Unicode", "Lucida Grande", sans-serif;
+	font-size:18px;
+	color:#F00;
+}
+
+.wrapper {
+  margin: auto;
+  width: 50%;
+  border: 3px solid green;
+  padding: 10px;
+}
+
+.great {
+  margin: auto;
+  width: 50%;
+  border: 0px black;
+  padding: 0px;
+}
+
+.form {
+	text-align:center;
+	margin:auto;
+}
+
+a:hover {
+	color:#F0F;
+}
+
+a:active {
+	text-decoration:underline;
+	color:#F00;
+}
+a {
+	text-decoration:none;
+}
