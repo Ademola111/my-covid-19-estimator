@@ -34,6 +34,7 @@ jobs:
         flake8 ./src/ --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 ./src/ --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
   ch-1:
     needs: lint
     name: audit challenge 1
@@ -76,8 +77,9 @@ jobs:
     - name: Run Audits
       run: |
         yarn jest audits/ch-1 --json --outputFile=audits/ch-1.json --noStackTrace
+
     - name: Report Audits
-      uses: BuildforSDG-Cohort1-Assessment/jest-out@v1
+      uses: ./.github/actions/jest-out
       with:
         challenge: ch-1
         lang: python
@@ -123,10 +125,11 @@ jobs:
         path: audits
 
     - name: Run Audits
-      run: yarn jest audits/ch-2 --json --outputFile=audits/ch-2.json --noStackTrace
+      run: |
+        yarn jest audits/ch-2 --json --outputFile=audits/ch-2.json --noStackTrace
 
     - name: Report Audits
-      uses: BuildforSDG-Cohort1-Assessment/jest-out@v1
+      uses: ./.github/actions/jest-out
       with:
         challenge: ch-2
         lang: python
@@ -172,10 +175,11 @@ jobs:
         path: audits
 
     - name: Run Audits
-      run: yarn jest audits/ch-3 --json --outputFile=audits/ch-3.json --noStackTrace
+      run: |
+        yarn jest audits/ch-3 --json --outputFile=audits/ch-3.json --noStackTrace
 
     - name: Report Audits
-      uses: BuildforSDG-Cohort1-Assessment/jest-out@v1
+      uses: ./.github/actions/jest-out
       with:
         challenge: ch-3
         lang: python
@@ -184,7 +188,7 @@ jobs:
   lighthouse:
     needs: ch-3
     name: audit frontend app (lighthouse)
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
@@ -201,31 +205,24 @@ jobs:
 
     - name: Install Deps
       run: yarn add axios properties-reader @lhci/cli@0.3.x @actions/core @actions/github
-
-    - name: Prepare Audits
-      uses: actions/checkout@v2
-      with: 
-        repository: BuildforSDG-Cohort1-Assessment/covid-19-estimator-audits-js
-        path: audits
     
-    - name: Injest Frontend App URL
+    - name: Injest Properties
       id: props
-      uses: chalu/properties-io@v1
-      with:
-        file: ./app.properties
-        read-from: frontend.url
+      uses: ./.github/actions/props-out
     
     - name: Run Audits
-      run: npx lhci autorun --collect.url=${{ steps.props.outputs.value }} --config=./audits/lighthouserc.json
+      run: npx lhci autorun --collect.url=${{ steps.props.outputs.frontend }} --config=./audits/lighthouserc.json
     
     - name: Report Audits
-      uses: BuildforSDG-Cohort1-Assessment/lighthouse-out@v1
+      uses: ./.github/actions/lhr-out
+      with:
+        lang: javascript
       if: always()
   
   ch-4:
     needs: lighthouse
     name: audit frontend UI
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
@@ -241,8 +238,9 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Install Deps
-      run: yarn add jest axios on-covid-19 properties-reader xml2json puppeteer @babel/core @babel/preset-env babel-jest @actions/core @actions/github
-
+      run: |
+        yarn install
+        yarn add jest axios on-covid-19 properties-reader xml2json puppeteer @babel/core @babel/preset-env babel-jest @actions/core @actions/github
     - name: Prepare Audits
       uses: actions/checkout@v2
       with: 
@@ -250,10 +248,12 @@ jobs:
         path: audits
 
     - name: Run Audits
-      run: npx jest --config=audits/jest.config.js audits/ch-4 --json --outputFile=audits/ch-4.json --noStackTrace
+      run: |
+        yarn install
+        npx jest audits/ch-4 --json --outputFile=audits/ch-4.json --noStackTrace
 
     - name: Report Audits
-      uses: BuildforSDG-Cohort1-Assessment/jest-out@v1
+      uses: ./.github/actions/jest-out
       with:
         challenge: ch-4
         lang: javascript
@@ -262,7 +262,7 @@ jobs:
   ch-5:
     needs: ch-3
     name: audit backend API
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
@@ -278,8 +278,9 @@ jobs:
         node-version: ${{ matrix.node-version }}
 
     - name: Install Deps
-      run: yarn add jest axios on-covid-19 properties-reader xml2json @babel/core @babel/preset-env babel-jest @actions/core @actions/github
-
+      run: |
+        yarn install
+        yarn add jest axios on-covid-19 properties-reader xml2json @babel/core @babel/preset-env babel-jest @actions/core @actions/github
     - name: Prepare Audits
       uses: actions/checkout@v2
       with: 
@@ -287,10 +288,12 @@ jobs:
         path: audits
 
     - name: Run Audits
-      run: npx jest --config=audits/jest.config.js audits/ch-5 --json --outputFile=audits/ch-5.json --noStackTrace
+      run: |
+        yarn install
+        npx jest audits/ch-5 --json --outputFile=audits/ch-5.json --noStackTrace
 
     - name: Report Audits
-      uses: BuildforSDG-Cohort1-Assessment/jest-out@v1
+      uses: ./.github/actions/jest-out
       with:
         challenge: ch-5
         lang: javascript
